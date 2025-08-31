@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <title>Callback ML</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+  <h1>Autorização Mercado Livre</h1>
+  <p><strong>code:</strong> <code id="code">carregando…</code></p>
+  <button id="copy">Copiar code</button>
+  <p id="status" style="color: green;"></p>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+    const codeEl = document.getElementById("code");
+    const copyBtn = document.getElementById("copy");
+    const statusEl = document.getElementById("status");
+    if (code) {
+      codeEl.textContent = code;
+    } else {
+      codeEl.textContent = "Nenhum code na URL.";
+      copyBtn.disabled = true;
+    }
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(code || "");
+        statusEl.textContent = "Code copiado!";
+      } catch {
+        statusEl.textContent = "Copie manualmente o code acima.";
+      }
+    });
+  </script>
+</body>
+</html>
