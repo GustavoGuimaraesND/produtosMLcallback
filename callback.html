@@ -1,36 +1,19 @@
 <!doctype html>
 <html lang="pt-br">
-<head>
-  <meta charset="utf-8" />
-  <title>Callback ML</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-</head>
+<head><meta charset="utf-8"><title>Callback ML</title><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body>
-  <h1>Autorização Mercado Livre</h1>
+  <h1>Autorizando…</h1>
+  <p>Se nada acontecer em 3s, copie o <code>code</code> abaixo e cole no terminal.</p>
   <p><strong>code:</strong> <code id="code">carregando…</code></p>
-  <button id="copy">Copiar code</button>
-  <p id="status" style="color: green;"></p>
-
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
-    const codeEl = document.getElementById("code");
-    const copyBtn = document.getElementById("copy");
-    const statusEl = document.getElementById("status");
+    const p = new URLSearchParams(location.search);
+    const code = p.get("code"), state = p.get("state") || "";
+    document.getElementById("code").textContent = code || "sem code";
+    // tenta redirecionar para o listener local
     if (code) {
-      codeEl.textContent = code;
-    } else {
-      codeEl.textContent = "Nenhum code na URL.";
-      copyBtn.disabled = true;
+      const url = `http://127.0.0.1:8080/callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`;
+      setTimeout(()=> location.href = url, 800); // pequena espera para UX
     }
-    copyBtn.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(code || "");
-        statusEl.textContent = "Code copiado!";
-      } catch {
-        statusEl.textContent = "Copie manualmente o code acima.";
-      }
-    });
   </script>
 </body>
 </html>
